@@ -11,17 +11,11 @@
     - ~~~php
         'api' => [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            .
-            .
-            .
         ],
       ~~~
 - Change `use` section of `app/Models/User.php` to:
     - ~~~php
         use HasApiTokens, HasFactory, Notifiable;
-        .
-        .
-        .
       ~~~
 - Create a controller `php artisan make:controller AuthController`
     - ~~~php
@@ -72,7 +66,14 @@
         Route::group(['middleware' => ['auth:sanctum']], function () {
             // protected routes
 
+            // Do something with controller
             Route::post('/logout', [AuthController::class, 'logout']);
+
+            // Do something without controller
+            Route::post('/info', function (Request $request) {
+                $user = $request->user();
+                return response()->json(['username' => $user->name, 'data' => 'this is our protected data for ' . $user->name]);
+            });
         });
       ~~~
 - Postman
@@ -93,6 +94,11 @@
         - Form data body: `No`
     - User
         - URL: `localhost:8000/api/user`
+        - Authorizathon: `Bearer`
+        - Header: `Accept => application/json`
+        - Form data body: `No`
+    - Info
+        - URL: `localhost:8000/api/info`
         - Authorizathon: `Bearer`
         - Header: `Accept => application/json`
         - Form data body: `No`

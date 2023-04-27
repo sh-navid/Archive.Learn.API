@@ -24,6 +24,41 @@
         .
       ~~~
 - Create a controller `php artisan make:controller AuthController`
+    - ~~~php
+        class AuthController extends Controller
+        {
+            public function register(Request $request)
+            {
+                $user = User::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'password' => Hash::make($request['password']),
+                ]);
+
+                $token = $user->createToken('authToken')->plainTextToken;
+                return response()->json(['access_token' => $token]);
+            }
+
+            public function login(Request $request)
+            {
+                if (!Auth::attempt($request->only('email', 'password'))) {
+                    return response()->json(['message' => 'Invalid login data'], 401);
+                }
+
+                $user = User::where('email', $request['email'])->firstOrFail();
+                $token = $user->createToken('authToken')->plainTextToken;
+                return response()->json(['access_token' => $token]);
+            }
+
+            public function logout(Request $request)
+            {
+                $request->user()->tokens()->delete();
+                return [
+                    'message' => 'user logged out'
+                ];
+            }
+        }
+      ~~~
 - Routes
     - ~~~php
         Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -40,3 +75,24 @@
             Route::post('/logout', [AuthController::class, 'logout']);
         });
       ~~~
+- Postman
+    - Register
+        - URL: `localhost:8000/api/register`
+        - Authorizathon: `No`
+        - Header: `Accept => application/json`
+        - Form data body: `name, email, password`
+    - Login
+        - URL: `localhost:8000/api/login`
+        - Authorizathon: `No`
+        - Header: `Accept => application/json`
+        - Form data body: `email, password`
+    - Logout
+        - URL: `localhost:8000/api/logout`
+        - Authorizathon: `Bearer`
+        - Header: `Accept => application/json`
+        - Form data body: `No`
+    - User
+        - URL: `localhost:8000/api/user`
+        - Authorizathon: `Bearer`
+        - Header: `Accept => application/json`
+        - Form data body: `No`

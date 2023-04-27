@@ -1,6 +1,7 @@
 # Laravel
 ## API
 ### AUTH - SANCTUM with Abilities
+- Run `composer create-project laravel/laravel api.test`
 - Run `composer require laravel/sanctum`
 - Run `php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"`
 - Put your database password in `.env`

@@ -1,8 +1,6 @@
 # Laravel
 ## API
 ### AUTH - SANCTUM
-- https://github.com/laravel/sanctum
-- https://laravel.com/docs/10.x/sanctum
 - Run `composer require laravel/sanctum`
 - Run `php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"`
 - Put your database password in `.env`

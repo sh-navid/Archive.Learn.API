@@ -14,6 +14,11 @@
             ...
         ])->toArray(),
       ~~~
+- Run `php artisan migrate:fresh`
+- Run `php artisan passport:keys`
+    - Checkout in `/storage`
+        - `oauth-private.key`
+        - `oauth-public.key`
 - Run `php artisan passport:install`
 - Modify `config/auth.php`
     - ~~~php
@@ -29,10 +34,11 @@
             ],
         ],
       ~~~
-- Run `php artisan passport:keys`
-    - Checkout in `/storage`
-        - `oauth-private.key`
-        - `oauth-public.key`
+- Modify User model:
+    - ~~~php
+        // use Laravel\Sanctum\HasApiTokens;
+        use Laravel\Passport\HasApiTokens;
+      ~~~
 - Modify `app/Providers/AuthServiceProvider.php`
     - ~~~php
         class AuthServiceProvider extends ServiceProvider
@@ -47,7 +53,6 @@
             }
         }
       ~~~
-- Run `php artisan migrate:fresh`
 - Routes
     - ~~~php
         Route::middleware('auth:api')->get('/user', function (Request $request) {

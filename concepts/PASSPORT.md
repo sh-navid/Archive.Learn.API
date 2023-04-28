@@ -21,3 +21,21 @@
             ],
         ],
       ~~~
+- Run `php artisan passport:keys`
+    - Checkout in `/storage`
+        - `oauth-private.key`
+        - `oauth-public.key`
+- Modify `app/Providers/AuthServiceProvider.php`
+    - ~~~php
+        class AuthServiceProvider extends ServiceProvider
+        {
+            protected $policies = [
+                'App\Models\Model' => 'App\Policies\ModelPolicy',
+            ];
+
+            public function boot()
+            {
+                $this->registerPolicies();
+            }
+        }
+      ~~~

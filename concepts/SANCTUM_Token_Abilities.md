@@ -27,7 +27,7 @@
                 'password' => Hash::make($request['password']),
             ]);
 
-            $token = $user->createToken('authToken', ["user:view"])->plainTextToken;
+            $token = $user->createToken('authToken', ["user:view"])->plainTextToken; // ->accessToken ???
             return response()->json(['access_token' => $token]);
         });
 
@@ -37,7 +37,7 @@
             }
 
             $user = User::where('email', $request['email'])->firstOrFail();
-            $token = $user->createToken('authToken', ["user:view", "user:edit"])->plainTextToken;
+            $token = $user->createToken('authToken', ["user:view", "user:edit"])->plainTextToken; // ->accessToken ???
             return response()->json(['access_token' => $token]);
         });
 

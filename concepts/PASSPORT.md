@@ -5,7 +5,15 @@
 - CD `api.test`
 - Run `composer require laravel/passport`
 - Enter database password in `.env`
-- Run `php artisan migrate:fresh`
+- Drop old database if exists and recreate it
+- Modify `config/app.php`
+    - ~~~php
+        'providers' => ServiceProvider::defaultProviders()->merge([
+            ...
+            Laravel\Passport\PassportServiceProvider::class,
+            ...
+        ])->toArray(),
+      ~~~
 - Run `php artisan passport:install`
 - Modify `config/auth.php`
     - ~~~php
@@ -38,4 +46,41 @@
                 $this->registerPolicies();
             }
         }
+      ~~~
+- Run `php artisan migrate:fresh`
+- Routes
+    - ~~~php
+        Route::middleware('auth:api')->get('/user', function (Request $request) {
+            return $request->user();
+        });
+
+
+        Route::post('/register', function (Request $request) {
+            $data = $request->validate([
+                'name' => 'required|max:200|min:4',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|confirmed|min:8'
+            ]);
+
+            $data['password'] = bcrypt($request->password);
+            $user = User::create($data);
+            $token = $user->createToken('MyAPIToken')->accessToken;
+            return response(['user' => $user, 'token' => $token]);
+        });
+
+        Route::post('/login', function (Request $request) {
+            $data = $request->validate([
+                'email' => 'email|required',
+                'password' => 'required'
+            ]);
+            if (!auth()->attempt($data)) {
+                return response(['error_message' => 'Incorrect input data']);
+            }
+            $token = auth()->user()->createToken('MyAPIToken')->accessToken; // ->plainTextToken ???
+            return response(['user' => auth()->user(), 'token' => $token]);
+        });
+
+        Route::middleware('auth:api')->group(function () {
+            // Route::resource('tasks', TaskController::class);
+        });
       ~~~

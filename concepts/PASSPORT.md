@@ -27,7 +27,6 @@
                 'driver' => 'session',
                 'provider' => 'users',
             ],
-
             'api' => [
                 'driver' => 'passport',
                 'provider' => 'users',
@@ -59,7 +58,6 @@
             return $request->user();
         });
 
-
         Route::post('/register', function (Request $request) {
             $data = $request->validate([
                 'name' => 'required|max:200|min:4',
@@ -81,7 +79,7 @@
             if (!auth()->attempt($data)) {
                 return response(['error_message' => 'Incorrect input data']);
             }
-            $token = auth()->user()->createToken('MyAPIToken')->accessToken; // ->plainTextToken ???
+            $token = auth()->user()->createToken('MyAPIToken')->accessToken;
             return response(['user' => auth()->user(), 'token' => $token]);
         });
 

@@ -1,3 +1,4 @@
 api.test
 node_modules
-projects/LaravelReact
+projects/LaravelReact/back
+projects/LaravelReact/front

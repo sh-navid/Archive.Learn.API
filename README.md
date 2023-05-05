@@ -1,4 +1,4 @@
-# Ins.API
+# API
 ## Concepts
 - [Auth with sanctum](/concepts/SANCTUM.md)
     - [Token Abilities](/concepts/SANCTUM_Token_Abilities.md)

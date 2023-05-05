@@ -4,7 +4,8 @@
     - [Token Abilities](/concepts/SANCTUM_Token_Abilities.md)
 - [Auth with passport](concepts/PASSPORT.md)
     - Refresh Token
-    - Token Expire
+        >> When an access token expires, a refresh token can be used to get a new access token without entering login credentials again. Refresh token rotation is a technique to secure refresh tokens. When a new access token is requested with the refresh token, a new refresh token is also returned and the old one is invalidated. <sup>[logrocket](https://blog.logrocket.com/persistent-login-in-react-using-refresh-token-rotation/)</sup>
+    - Token Expire Date
 - OAuth2
     - CLIENT_ID
     - CLIENT_SECRET
